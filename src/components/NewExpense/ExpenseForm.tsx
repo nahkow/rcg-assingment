@@ -1,15 +1,25 @@
 import React, { FormEvent, FormEventHandler, useState } from "react";
 
 import "./ExpenseForm.css";
-import { Expense } from '../../types/expenses';
+import { Expense } from "../../types/expenses";
 
-const ExpenseForm = ({onSaveExpenseData}: {onSaveExpenseData: (expense: Expense) => void}) => {
-  const [expense, setExpense] = useState<Expense>({amount: 0, date: new Date(), title: ''});
+const ExpenseForm = ({
+  onSaveExpenseData,
+  cancelAddExpense,
+}: {
+  onSaveExpenseData: (expense: Expense) => void;
+  cancelAddExpense: () => void;
+}) => {
+  const [expense, setExpense] = useState<Expense>({
+    amount: 0,
+    date: new Date(),
+    title: "",
+  });
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSaveExpenseData(expense);
-    setExpense({amount: 0, date: new Date(), title: ''})
+    setExpense({ amount: 0, date: new Date(), title: "" });
   };
 
   return (
@@ -20,7 +30,9 @@ const ExpenseForm = ({onSaveExpenseData}: {onSaveExpenseData: (expense: Expense)
           <input
             type="text"
             value={expense.title}
-            onChange={(e) => setExpense(prev => ({...prev, title: e.target.value }))}
+            onChange={(e) =>
+              setExpense((prev) => ({ ...prev, title: e.target.value }))
+            }
           />
         </div>
         <div className="new-expense__control">
@@ -30,7 +42,12 @@ const ExpenseForm = ({onSaveExpenseData}: {onSaveExpenseData: (expense: Expense)
             min="0.01"
             step="0.01"
             value={expense.amount}
-            onChange={(e) => setExpense(prev => ({...prev, amount: Number(e.target.value) }))}
+            onChange={(e) =>
+              setExpense((prev) => ({
+                ...prev,
+                amount: Number(e.target.value),
+              }))
+            }
           />
         </div>
         <div className="new-expense__control">
@@ -39,12 +56,18 @@ const ExpenseForm = ({onSaveExpenseData}: {onSaveExpenseData: (expense: Expense)
             type="date"
             min="2019-01-01"
             max="2022-12-31"
-            value={expense.date.toISOString().split('T')[0]}
-            onChange={(e) => setExpense(prev => ({...prev, date: e.target.valueAsDate ?? new Date() }))}
+            value={expense.date.toISOString().split("T")[0]}
+            onChange={(e) =>
+              setExpense((prev) => ({
+                ...prev,
+                date: e.target.valueAsDate ?? new Date(),
+              }))
+            }
           />
         </div>
       </div>
       <div className="new-expense__actions">
+        <button onClick={cancelAddExpense}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
